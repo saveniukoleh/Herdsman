@@ -1,7 +1,7 @@
 import { Container, Graphics } from 'pixi.js';
 import { Vector2D } from './utils/Vector2D';
 import { Random } from './utils/Random';
-import { AnimalPatrol } from './AnimalPatrol';
+// import { AnimalPatrol } from './AnimalPatrol'; // Disabled for now
 import type { IAnimal, IVector2D } from '../types.d';
 import { EntityState } from '../types.d';
 
@@ -10,14 +10,14 @@ import { EntityState } from '../types.d';
  */
 export class Animal {
   private container: Container;
-  private graphics: Graphics;
+  public graphics: Graphics;
   private position: Vector2D;
   private followTarget: Vector2D | null = null;
   private state: EntityState;
   private followIndex: number = -1;
   private id: string;
   private speed: number = 100; // Movement speed when following
-  private patrol: AnimalPatrol | null = null;
+  // private patrol: AnimalPatrol | null = null; // Disabled for now
 
   // Animal visual properties
   private readonly ANIMAL_RADIUS = 12;
@@ -27,8 +27,8 @@ export class Animal {
     parentContainer: Container,
     position: IVector2D,
     _followRadius: number,
-    gameWidth: number = 800,
-    gameHeight: number = 600
+    _gameWidth: number = 800,
+    _gameHeight: number = 600
   ) {
     this.container = parentContainer;
     this.position = new Vector2D(position.x, position.y);
@@ -119,20 +119,10 @@ export class Animal {
     }
   }
 
-  /**
-   * Patrol behavior - animals wander around when idle (currently disabled)
-   */
-  private patrolBehavior(): void {
-    // Patrol behavior is disabled - animals stay still
-    // if (this.patrol && this.patrol.isPatrolActive()) {
-    //   const currentTime = Date.now();
-    //   const movement = this.patrol.update(currentTime, this.position);
-    //   if (movement) {
-    //     const movementVector = new Vector2D(movement.x, movement.y);
-    //     this.position = this.position.add(movementVector);
-    //   }
-    // }
-  }
+  // Patrol behavior is disabled - animals stay still
+  // private patrolBehavior(): void {
+  //   // Patrol behavior is disabled - animals stay still
+  // }
 
   /**
    * Check if animal is following

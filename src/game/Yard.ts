@@ -114,69 +114,9 @@ export class Yard {
     // Yard doesn't need reset as it's static
   }
 
-  /**
-   * Draw the yard area
-   */
-  private drawYard(): void {
-    this.graphics.clear();
+  // drawYard method removed - yard is drawn directly in constructor
 
-    // Draw yard background (at 0,0 since graphics object is positioned)
-    console.log(
-      `🎨 Drawing yard with color: ${this.YARD_COLOR.toString(16)} (bright yellow)`
-    );
-    console.log(`🎨 Yard size: ${this.size.width}x${this.size.height}`);
-
-    // Try a different approach - draw multiple rectangles to ensure visibility
-    this.graphics.beginFill(this.YARD_COLOR, 1.0);
-    this.graphics.drawRect(0, 0, this.size.width, this.size.height);
-    this.graphics.endFill();
-
-    // Draw a second rectangle to ensure it's visible
-    this.graphics.beginFill(this.YARD_COLOR, 1.0);
-    this.graphics.drawRect(2, 2, this.size.width - 4, this.size.height - 4);
-    this.graphics.endFill();
-
-    // Draw yard border
-    this.graphics.lineStyle(5, this.YARD_BORDER_COLOR); // Thicker border
-    this.graphics.drawRect(0, 0, this.size.width, this.size.height);
-
-    // Add yard label
-    this.graphics.lineStyle(0);
-    this.graphics.beginFill(0x000000);
-    this.graphics.drawRect(
-      this.size.width / 2 - 20,
-      this.size.height / 2 - 5,
-      40,
-      10
-    );
-    this.graphics.endFill();
-
-    // Add some decorative elements
-    this.addYardDecorations();
-  }
-
-  /**
-   * Add decorative elements to the yard
-   */
-  private addYardDecorations(): void {
-    // Add fence posts
-    const postSpacing = this.size.width / 6;
-    for (let i = 0; i < 5; i++) {
-      const x = postSpacing * (i + 1);
-      this.graphics.lineStyle(2, 0x8b4513);
-      this.graphics.moveTo(x, 0);
-      this.graphics.lineTo(x, this.size.height);
-    }
-
-    // Add grass texture
-    this.graphics.lineStyle(1, 0x27ae60, 0.3);
-    for (let i = 0; i < 10; i++) {
-      const x = Math.random() * this.size.width;
-      const y = Math.random() * this.size.height;
-      this.graphics.moveTo(x, y);
-      this.graphics.lineTo(x + 2, y + 2);
-    }
-  }
+  // addYardDecorations method removed - simplified yard design
 
   /**
    * Destroy the yard
