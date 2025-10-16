@@ -1,4 +1,4 @@
-import type { IVector2D } from '../../types';
+import type { IVector2D } from '../../types.d';
 
 /**
  * Vector2D utility class for 2D mathematical operations

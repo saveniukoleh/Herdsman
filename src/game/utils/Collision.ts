@@ -1,4 +1,4 @@
-import type { IVector2D } from '../../types';
+import type { IVector2D } from '../../types.d';
 
 /**
  * Collision detection utilities

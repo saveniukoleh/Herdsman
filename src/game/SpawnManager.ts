@@ -1,6 +1,6 @@
 import { Animal } from './Animal';
 import { Random } from './utils/Random';
-import type { IVector2D } from '../types';
+import type { IVector2D } from '../types.d';
 
 /**
  * SpawnManager class - handles dynamic animal spawning
@@ -158,5 +158,3 @@ export class SpawnManager {
     };
   }
 }
-
-

@@ -1,6 +1,6 @@
 import { Container, Graphics } from 'pixi.js';
 import { Vector2D } from './utils/Vector2D';
-import type { IHero, IVector2D } from '../types';
+import type { IHero, IVector2D } from '../types.d';
 
 /**
  * Hero character class - the main player character
@@ -40,6 +40,14 @@ export class Hero {
     this.graphics.interactive = false; // Make sure hero doesn't block clicks
     this.drawHero();
     this.container.addChild(this.graphics);
+
+    // Set initial graphics position
+    this.graphics.x = this.position.x;
+    this.graphics.y = this.position.y;
+
+    console.log(
+      `🦸 Hero created at position: (${this.position.x}, ${this.position.y})`
+    );
   }
 
   /**
@@ -55,6 +63,7 @@ export class Hero {
    * Move hero to a target position
    */
   public moveTo(target: IVector2D): void {
+    console.log(`🎯 Hero moving to: (${target.x}, ${target.y})`);
     this.targetPosition = new Vector2D(target.x, target.y);
     this.isMoving = true;
   }
@@ -70,6 +79,7 @@ export class Hero {
       // Close enough to target
       this.position = this.targetPosition.clone();
       this.isMoving = false;
+      console.log('🎯 Hero reached target');
     } else {
       // Move towards target
       const normalizedDirection = direction.normalize();
@@ -143,6 +153,11 @@ export class Hero {
       this.followers.forEach((follower, i) => {
         follower.setFollowIndex(i);
       });
+      console.log(`🗑️ Removed follower ${animal.getState().id} from hero`);
+    } else {
+      console.log(
+        `⚠️ Animal ${animal.getState().id} not found in followers list`
+      );
     }
   }
 
@@ -158,6 +173,28 @@ export class Hero {
    */
   public getFollowers(): Animal[] {
     return [...this.followers];
+  }
+
+  /**
+   * Clean up invalid followers (destroyed animals)
+   */
+  public cleanupInvalidFollowers(): void {
+    const validFollowers = this.followers.filter(
+      (follower) =>
+        follower && follower.graphics && !follower.graphics.destroyed
+    );
+
+    if (validFollowers.length !== this.followers.length) {
+      console.log(
+        `🧹 Cleaning up ${this.followers.length - validFollowers.length} invalid followers`
+      );
+      this.followers = validFollowers;
+
+      // Update follow indices
+      this.followers.forEach((follower, i) => {
+        follower.setFollowIndex(i);
+      });
+    }
   }
 
   /**

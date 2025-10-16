@@ -1,5 +1,5 @@
 import { Random } from './utils/Random';
-import type { IVector2D } from '../types';
+import type { IVector2D } from '../types.d';
 
 /**
  * AnimalPatrol class - handles random wandering behavior for animals

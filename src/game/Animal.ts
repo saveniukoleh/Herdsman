@@ -2,8 +2,8 @@ import { Container, Graphics } from 'pixi.js';
 import { Vector2D } from './utils/Vector2D';
 import { Random } from './utils/Random';
 import { AnimalPatrol } from './AnimalPatrol';
-import type { IAnimal, IVector2D } from '../types';
-import { EntityState } from '../types';
+import type { IAnimal, IVector2D } from '../types.d';
+import { EntityState } from '../types.d';
 
 /**
  * Animal class - collectible entities that follow the hero
@@ -35,25 +35,41 @@ export class Animal {
     this.state = EntityState.IDLE;
     this.id = Random.id(8);
 
-    // Initialize patrol behavior
-    this.patrol = new AnimalPatrol(gameWidth, gameHeight, position);
+    // Initialize patrol behavior (disabled for now)
+    // this.patrol = new AnimalPatrol(gameWidth, gameHeight, position);
 
     // Create animal graphics
     this.graphics = new Graphics();
     this.graphics.interactive = false; // Make sure animals don't block clicks
     this.drawAnimal();
     this.container.addChild(this.graphics);
+
+    // Set initial graphics position
+    this.graphics.x = this.position.x;
+    this.graphics.y = this.position.y;
+
+    console.log(
+      `🐑 Animal created at position: (${this.position.x}, ${this.position.y})`
+    );
   }
 
   /**
    * Update animal behavior
    */
   public update(): void {
+    // Check if animal has been destroyed
+    if (!this.graphics || this.graphics.destroyed) {
+      console.log(
+        `⚠️ Animal ${this.id} is being updated but graphics are destroyed!`
+      );
+      return;
+    }
+
     if (this.state === EntityState.FOLLOWING && this.followTarget) {
       this.moveTowardsTarget();
     } else if (this.state === EntityState.IDLE) {
-      // Patrol behavior when idle
-      this.patrolBehavior();
+      // Animals stay still when idle - no patrol behavior
+      // this.patrolBehavior(); // Disabled to keep animals still
     }
 
     // Update graphics position
@@ -104,18 +120,18 @@ export class Animal {
   }
 
   /**
-   * Patrol behavior - animals wander around when idle
+   * Patrol behavior - animals wander around when idle (currently disabled)
    */
   private patrolBehavior(): void {
-    if (this.patrol && this.patrol.isPatrolActive()) {
-      const currentTime = Date.now();
-      const movement = this.patrol.update(currentTime, this.position);
-
-      if (movement) {
-        const movementVector = new Vector2D(movement.x, movement.y);
-        this.position = this.position.add(movementVector);
-      }
-    }
+    // Patrol behavior is disabled - animals stay still
+    // if (this.patrol && this.patrol.isPatrolActive()) {
+    //   const currentTime = Date.now();
+    //   const movement = this.patrol.update(currentTime, this.position);
+    //   if (movement) {
+    //     const movementVector = new Vector2D(movement.x, movement.y);
+    //     this.position = this.position.add(movementVector);
+    //   }
+    // }
   }
 
   /**

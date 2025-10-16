@@ -1,6 +1,6 @@
 import { Container, Graphics } from 'pixi.js';
 import { Collision } from './utils/Collision';
-import type { IVector2D } from '../types';
+import type { IVector2D } from '../types.d';
 
 /**
  * Yard class - destination area where animals are delivered
@@ -27,8 +27,26 @@ export class Yard {
     // Create yard graphics
     this.graphics = new Graphics();
     this.graphics.interactive = false; // Make sure yard doesn't block clicks
-    this.drawYard();
+
+    // Draw yard with proper yellow color
+    console.log(`🎨 Drawing yard with yellow color`);
+    this.graphics.beginFill(this.YARD_COLOR, 1.0); // Yellow color
+    this.graphics.drawRect(0, 0, this.size.width, this.size.height);
+    this.graphics.endFill();
+
+    // Add a border for better visibility
+    this.graphics.lineStyle(3, this.YARD_BORDER_COLOR);
+    this.graphics.drawRect(0, 0, this.size.width, this.size.height);
+
     this.container.addChild(this.graphics);
+
+    // Position the yard graphics at the correct location
+    this.graphics.x = this.position.x;
+    this.graphics.y = this.position.y;
+
+    console.log(
+      `🏠 Yard created at (${this.graphics.x}, ${this.graphics.y}) with size ${this.size.width}x${this.size.height}`
+    );
   }
 
   /**
@@ -102,31 +120,32 @@ export class Yard {
   private drawYard(): void {
     this.graphics.clear();
 
-    // Draw yard background
-    this.graphics.beginFill(this.YARD_COLOR);
-    this.graphics.drawRect(
-      this.position.x,
-      this.position.y,
-      this.size.width,
-      this.size.height
+    // Draw yard background (at 0,0 since graphics object is positioned)
+    console.log(
+      `🎨 Drawing yard with color: ${this.YARD_COLOR.toString(16)} (bright yellow)`
     );
+    console.log(`🎨 Yard size: ${this.size.width}x${this.size.height}`);
+
+    // Try a different approach - draw multiple rectangles to ensure visibility
+    this.graphics.beginFill(this.YARD_COLOR, 1.0);
+    this.graphics.drawRect(0, 0, this.size.width, this.size.height);
+    this.graphics.endFill();
+
+    // Draw a second rectangle to ensure it's visible
+    this.graphics.beginFill(this.YARD_COLOR, 1.0);
+    this.graphics.drawRect(2, 2, this.size.width - 4, this.size.height - 4);
     this.graphics.endFill();
 
     // Draw yard border
-    this.graphics.lineStyle(3, this.YARD_BORDER_COLOR);
-    this.graphics.drawRect(
-      this.position.x,
-      this.position.y,
-      this.size.width,
-      this.size.height
-    );
+    this.graphics.lineStyle(5, this.YARD_BORDER_COLOR); // Thicker border
+    this.graphics.drawRect(0, 0, this.size.width, this.size.height);
 
     // Add yard label
     this.graphics.lineStyle(0);
     this.graphics.beginFill(0x000000);
     this.graphics.drawRect(
-      this.position.x + this.size.width / 2 - 20,
-      this.position.y + this.size.height / 2 - 5,
+      this.size.width / 2 - 20,
+      this.size.height / 2 - 5,
       40,
       10
     );
@@ -143,17 +162,17 @@ export class Yard {
     // Add fence posts
     const postSpacing = this.size.width / 6;
     for (let i = 0; i < 5; i++) {
-      const x = this.position.x + postSpacing * (i + 1);
+      const x = postSpacing * (i + 1);
       this.graphics.lineStyle(2, 0x8b4513);
-      this.graphics.moveTo(x, this.position.y);
-      this.graphics.lineTo(x, this.position.y + this.size.height);
+      this.graphics.moveTo(x, 0);
+      this.graphics.lineTo(x, this.size.height);
     }
 
     // Add grass texture
     this.graphics.lineStyle(1, 0x27ae60, 0.3);
     for (let i = 0; i < 10; i++) {
-      const x = this.position.x + Math.random() * this.size.width;
-      const y = this.position.y + Math.random() * this.size.height;
+      const x = Math.random() * this.size.width;
+      const y = Math.random() * this.size.height;
       this.graphics.moveTo(x, y);
       this.graphics.lineTo(x + 2, y + 2);
     }

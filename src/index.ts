@@ -1,6 +1,6 @@
 import { Application } from 'pixi.js';
 import { Game } from './game/Game';
-import type { GameConfig } from './types';
+import type { GameConfig } from './types.d';
 
 /**
  * Game configuration constants
@@ -12,7 +12,7 @@ const GAME_CONFIG: GameConfig = {
   FOLLOW_RADIUS: 80,
   MAX_FOLLOWERS: 5,
   ANIMAL_SPAWN_COUNT: { min: 3, max: 8 },
-  YARD_POSITION: { x: 50, y: 50 },
+  YARD_POSITION: { x: 50, y: 100 },
   YARD_SIZE: { width: 100, height: 80 },
 };
 
@@ -49,6 +49,9 @@ async function initGame(): Promise<void> {
 
   // Start the game loop
   game.start();
+
+  console.log('🎮 Game started successfully!');
+  console.log('Game config:', GAME_CONFIG);
 
   // Handle window resize
   window.addEventListener('resize', () => {
