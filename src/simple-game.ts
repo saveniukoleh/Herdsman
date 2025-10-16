@@ -29,6 +29,7 @@ async function initSimpleGame(): Promise<void> {
     hero.endFill();
     hero.x = 400;
     hero.y = 300;
+    hero.interactive = false; // Don't block clicks on the hero
     app.stage.addChild(hero);
 
     // Create a simple white circle (animal)
@@ -38,6 +39,7 @@ async function initSimpleGame(): Promise<void> {
     animal.endFill();
     animal.x = 200;
     animal.y = 200;
+    animal.interactive = false; // Don't block clicks on the animal
     app.stage.addChild(animal);
 
     // Create a simple yellow rectangle (yard)
@@ -47,14 +49,27 @@ async function initSimpleGame(): Promise<void> {
     yard.endFill();
     yard.x = 50;
     yard.y = 50;
+    yard.interactive = false; // Don't block clicks on the yard
     app.stage.addChild(yard);
 
     // Add click handler for movement
     app.stage.interactive = true;
+    app.stage.hitArea = app.screen; // Make sure the entire screen is clickable
+
     app.stage.on('pointerdown', (event) => {
       console.log('Clicked at:', event.global.x, event.global.y);
       hero.x = event.global.x;
       hero.y = event.global.y;
+    });
+
+    // Also add a click handler to the canvas as backup
+    app.canvas.addEventListener('click', (event) => {
+      const rect = app.canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      console.log('Canvas clicked at:', x, y);
+      hero.x = x;
+      hero.y = y;
     });
 
     console.log('✅ Simple game initialized successfully!');
